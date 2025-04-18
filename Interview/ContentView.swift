@@ -12,16 +12,19 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            switch self.viewModel.state {
-            case .downloading:
-                ProgressView()
-            case .error(let error):
-                ContentUnavailableView("Error", systemImage: "x.circle.fill", description: Text(error.localizedDescription))
-            case .todos(let todos):
-                List(todos) { todo in
-                    Text(todo.title)
+            Group {
+                switch self.viewModel.state {
+                case .downloading:
+                    ProgressView()
+                case .error(let error):
+                    ContentUnavailableView("Error", systemImage: "x.circle.fill", description: Text(error.localizedDescription))
+                case .todos(let todos):
+                    List(todos) { todo in
+                        Text(todo.title)
+                    }
                 }
             }
+            .navigationTitle("Todos")
         }
         .onAppear {
             self.viewModel.fetch()
