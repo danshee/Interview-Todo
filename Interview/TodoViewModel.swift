@@ -26,7 +26,12 @@ class TodoViewModel: ObservableObject {
             return
         }
         
-        URLSession.shared.dataTaskPublisher(for: url)
+        // WORKAROUND: There appears to be a bug in 18.4 so I am using ephemeral
+        // as a workaround (see https://developer.apple.com/forums/thread/777999).
+        let configuration = URLSessionConfiguration.ephemeral
+        let session = URLSession(configuration: configuration)
+        
+        session.dataTaskPublisher(for: url)
             .receive(on: DispatchQueue.main)
             .map(\.data)
             .decode(type: [Todo].self, decoder: JSONDecoder())
