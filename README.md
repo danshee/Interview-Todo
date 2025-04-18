@@ -10,4 +10,12 @@ In [TodoViewModel](Interview/TodoViewModel.swift) `fetch()` I am attempting to d
 
 This URL works beautifully if I call it from Chrome on my Mac or Safari in the iOS Simulator, but if I try to call it from my app it fails with a timeout.
 
-What am I doing wrong?
+**What am I doing wrong?**
+
+----
+
+**!!! Workaround / Solution !!!**
+
+Apparently this is an Apple bug.  See https://developer.apple.com/forums/thread/777999.
+
+As a workaround I replaced the shared `URLSession` with an ephemeral one and that seems to work.
