@@ -8,14 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var viewModel = TodoViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            switch self.viewModel.state {
+            case .downloading:
+                ProgressView()
+            case .error(let error):
+                ContentUnavailableView("Error", systemImage: "x.circle.fill", description: Text(error.localizedDescription))
+            case .todos(let todos):
+                List(todos) { todo in
+                    Text(todo.title)
+                }
+            }
         }
-        .padding()
+        .onAppear {
+            self.viewModel.fetch()
+        }
     }
 }
 
