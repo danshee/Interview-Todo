@@ -32,9 +32,9 @@ class TodoViewModel: ObservableObject {
         let session = URLSession(configuration: configuration)
         
         session.dataTaskPublisher(for: url)
-            .receive(on: DispatchQueue.main)
             .map(\.data)
             .decode(type: [Todo].self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
                 switch result {
                 case .finished:
